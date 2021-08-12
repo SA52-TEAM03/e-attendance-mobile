@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">E-Attendance-Mobile</string>
+    <string name="welcome">Welcome to e-Attendance</string>
+    <string name="log_in">Log In</string>
+    <string name="student_email">Email</string>
+    <string name="Password">Password</string>
+
 </resources>

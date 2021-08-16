@@ -1,9 +1,13 @@
 package sa52.team03.adproject.CommonUtils;
 
+import java.util.List;
+import java.util.Map;
+
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.HTTP;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
@@ -19,4 +23,7 @@ public interface RetrofitAPI {
     Call<ResponseBody> loginUser (
             @Body User user
     );
+
+    @GET("api/student/attendance")
+    Call<Map<String, List<Integer>>> getAttendance(@Query("userName") String userName);
 }

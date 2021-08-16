@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -39,9 +41,9 @@ public class CheckAttendanceActivity extends AppCompatActivity {
         getAttendance();
 
         alertTextView = findViewById(R.id.alert);
-        mAdapter = new CheckAttendanceListViewAdapter(this,studentAttendance,alertTextView);
+        mAdapter = new CheckAttendanceListViewAdapter(this, studentAttendance, alertTextView);
         listView = (ListView) findViewById(R.id.listView);
-        if (listView!=null){
+        if (listView != null) {
             listView.setAdapter(mAdapter);
         }
 
@@ -66,21 +68,22 @@ public class CheckAttendanceActivity extends AppCompatActivity {
 
     private void getAttendance() {
 
-        String userName = "student1@email.com";
+        SharedPreferences pref = getPreferences(Context.MODE_PRIVATE);
+        String userName = pref.getString("username", null);
+        String token = pref.getString("JwtToken", null);
 
         Call<Map<String, List<Integer>>> call = RetrofitClient
                 .getServerInstance()
                 .getAPI()
-                .getAttendance(userName);
+                .getAttendance(userName, token);
 
         call.enqueue(new Callback<Map<String, List<Integer>>>() {
             @Override
             public void onResponse(Call<Map<String, List<Integer>>> call, Response<Map<String, List<Integer>>> response) {
                 titleTextview = findViewById(R.id.title);
-                if (response.body()==null){
+                if (response.body() == null) {
                     titleTextview.setText("There is no class enrolment!");
-                }
-                else{
+                } else {
                     titleTextview.setText("Class Attendance Rate Until Now.");
                     mAdapter.setData(response.body());
                 }

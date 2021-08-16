@@ -1,12 +1,11 @@
 package sa52.team03.adproject.models;
 
 public class User {
-    private String userName;
+    private String username;
     private String password;
 
-
-    public User(String userName, String password) {
-        this.userName = userName;
+    public User(String username, String password) {
+        this.username = username;
         this.password = password;
     }
 }

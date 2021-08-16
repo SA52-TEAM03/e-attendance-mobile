@@ -38,18 +38,14 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import sa52.team03.adproject.CommonUtils.FaceUtil;
-import sa52.team03.adproject.CommonUtils.RetrofitClient;
 
 public class FaceAuthenticationActivity extends AppCompatActivity {
 
@@ -197,7 +193,7 @@ public class FaceAuthenticationActivity extends AppCompatActivity {
         try {
             mCaptureRequestBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
             mCaptureRequestBuilder.addTarget(mSurface);
-            mCameraDevice.createCaptureSession(Arrays.asList(mSurface), mCaptureSessionStateListener, mBackgroundHandler);
+            mCameraDevice.createCaptureSession(Collections.singletonList(mSurface), mCaptureSessionStateListener, mBackgroundHandler);
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
@@ -205,33 +201,21 @@ public class FaceAuthenticationActivity extends AppCompatActivity {
 
     private void searchFace() {
 
-        final Bitmap bitmap = mTextureView.getBitmap();
+        Bitmap bitmap = mTextureView.getBitmap();
+        int w = bitmap.getWidth();
+        int h = bitmap.getHeight();
+        int cropSize = Math.min(w, h);
+
+        bitmap = Bitmap.createBitmap(bitmap, (bitmap.getWidth() - cropSize) / 2,
+                (bitmap.getHeight() - cropSize) / 2, cropSize, cropSize);
+
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream);
         byte[] byteArray = byteArrayOutputStream.toByteArray();
         String stringBase64 = Base64.encodeToString(byteArray, Base64.DEFAULT);
 
         try {
-            //request body
-            JSONObject bodyJson = new JSONObject();
-            bodyJson.put("image", stringBase64);
-            bodyJson.put("image_type", "BASE64");
-            bodyJson.put("group_id_list", "student,lecturer,admin");
-            bodyJson.put("quality_control", "NORMAL");
-            bodyJson.put("max_face_num", "1");
-            String bodyString = bodyJson.toString();
-            RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), bodyString);
-
-            //request query param
-            String access_token = FaceUtil.getFaceAPIToken();
-
-            Call<ResponseBody> call = RetrofitClient
-                    .getFaceIdInstance()
-                    .getAPI()
-                    .faceSearch(access_token, requestBody);
-
-            call.enqueue(mFaceSearchCallback);
-
+            FaceUtil.GetAuthenticationCall(stringBase64).enqueue(mFaceSearchCallback);
         } catch (JSONException e) {
             e.printStackTrace();
         }

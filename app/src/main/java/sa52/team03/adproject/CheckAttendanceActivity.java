@@ -68,7 +68,7 @@ public class CheckAttendanceActivity extends AppCompatActivity {
 
     private void getAttendance() {
 
-        SharedPreferences pref = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences pref = getSharedPreferences("user_credentials",MODE_PRIVATE);
         String userName = pref.getString("username", null);
         String token = pref.getString("JwtToken", null);
 

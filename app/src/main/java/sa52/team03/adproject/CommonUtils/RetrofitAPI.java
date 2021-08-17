@@ -28,5 +28,5 @@ public interface RetrofitAPI {
     Call<ResponseBody> loginUser(@Body User user);
 
     @GET("api/student/attendance")
-    Call<Map<String, List<Integer>>> getAttendance(@Query("userName") String userName,@Header("JetToken") String token);
+    Call<Map<String, List<Integer>>> getAttendance(@Query("userName") String userName,@Header("JwtToken") String token);
 }

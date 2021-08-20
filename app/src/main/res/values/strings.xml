@@ -9,5 +9,6 @@
     <string name="cancel">cancel</string>
     <string name="student_username">Student username</string>
     <string name="submitted">you have submitted your attendance successfully</string>
+    <string name="no_class_enrol">There is no class enrolment!</string>
 
 </resources>

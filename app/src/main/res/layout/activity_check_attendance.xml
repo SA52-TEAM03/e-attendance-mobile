@@ -10,7 +10,7 @@
 
     <TextView
         android:id="@+id/title"
-        android:text="There is no class enrolment!"
+        android:text="@string/no_class_enrol"
         android:textSize="22sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

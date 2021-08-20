@@ -1,7 +1,6 @@
 package sa52.team03.adproject.CommonUtils;
 
 import java.util.List;
-import java.util.Map;
 
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
@@ -12,6 +11,7 @@ import retrofit2.http.HTTP;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.Query;
+import sa52.team03.adproject.models.ClassModule;
 import sa52.team03.adproject.models.User;
 
 public interface RetrofitAPI {
@@ -27,6 +27,6 @@ public interface RetrofitAPI {
     @HTTP(method = "POST",path="token", hasBody = true)
     Call<ResponseBody> loginUser(@Body User user);
 
-    @GET("api/student/attendance")
-    Call<Map<String, List<Integer>>> getAttendance(@Query("userName") String userName,@Header("JwtToken") String token);
+    @GET("api/student/class-module")
+    Call<List<ClassModule>> getClassModule(@Header("JwtToken") String token);
 }

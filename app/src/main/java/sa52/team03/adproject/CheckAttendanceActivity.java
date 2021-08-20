@@ -7,13 +7,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
+
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.TextView;
 
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,12 +24,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import sa52.team03.adproject.CommonUtils.RetrofitClient;
+import sa52.team03.adproject.models.ClassModule;
 
 public class CheckAttendanceActivity extends AppCompatActivity {
 
     private CheckAttendanceListViewAdapter mAdapter;
     private ListView listView;
-    private Map<String, List<Integer>> studentAttendance = new HashMap<>();
+    private List<ClassModule> classModules = new ArrayList<>();
     private TextView titleTextview, alertTextView;
 
     @Override
@@ -38,10 +41,11 @@ public class CheckAttendanceActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        getAttendance();
+        getClassModule();
+
 
         alertTextView = findViewById(R.id.alert);
-        mAdapter = new CheckAttendanceListViewAdapter(this, studentAttendance, alertTextView);
+        mAdapter = new CheckAttendanceListViewAdapter(this, classModules, alertTextView);
         listView = (ListView) findViewById(R.id.listView);
         if (listView != null) {
             listView.setAdapter(mAdapter);
@@ -66,20 +70,19 @@ public class CheckAttendanceActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void getAttendance() {
+    private void getClassModule() {
 
         SharedPreferences pref = getSharedPreferences("user_credentials",MODE_PRIVATE);
-        String userName = pref.getString("username", null);
         String token = pref.getString("JwtToken", null);
 
-        Call<Map<String, List<Integer>>> call = RetrofitClient
+        Call<List<ClassModule>> call = RetrofitClient
                 .getServerInstance()
                 .getAPI()
-                .getAttendance(userName, token);
+                .getClassModule(token);
 
-        call.enqueue(new Callback<Map<String, List<Integer>>>() {
+        call.enqueue(new Callback<List<ClassModule>>() {
             @Override
-            public void onResponse(Call<Map<String, List<Integer>>> call, Response<Map<String, List<Integer>>> response) {
+            public void onResponse(Call<List<ClassModule>> call, Response<List<ClassModule>> response) {
                 titleTextview = findViewById(R.id.title);
                 if (response.body() == null) {
                     titleTextview.setText("There is no class enrolment!");
@@ -90,10 +93,10 @@ public class CheckAttendanceActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<Map<String, List<Integer>>> call, Throwable t) {
+            public void onFailure(Call<List<ClassModule>> call, Throwable t) {
 
             }
         });
-
     }
+
 }

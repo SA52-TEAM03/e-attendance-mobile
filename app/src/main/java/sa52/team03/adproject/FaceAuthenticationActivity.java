@@ -3,6 +3,7 @@ package sa52.team03.adproject;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.ImageFormat;
@@ -46,6 +47,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import sa52.team03.adproject.CommonUtils.FaceUtil;
+import sa52.team03.adproject.CommonUtils.RetrofitClient;
+import sa52.team03.adproject.models.QRCodeData;
 
 public class FaceAuthenticationActivity extends AppCompatActivity {
 
@@ -55,6 +58,7 @@ public class FaceAuthenticationActivity extends AppCompatActivity {
     private Size mPreviewSize;
     private HandlerThread mBackgroundHandlerThread;
     private Handler mBackgroundHandler;
+    private String qrCodeText;
 
     private final Callback<ResponseBody> mFaceSearchCallback = new Callback<ResponseBody>() {
         @Override
@@ -75,11 +79,15 @@ public class FaceAuthenticationActivity extends AppCompatActivity {
                     mBackgroundHandler.postDelayed(() -> searchFace(), 1000);
 
                 } else {
+
+                    //Face Authentication Success
                     System.out.println(result_json.toString(2));
                     String GroupId = result_json.getJSONObject("result").getJSONArray("user_list").getJSONObject(0).getString("group_id");
                     int userId = result_json.getJSONObject("result").getJSONArray("user_list").getJSONObject(0).getInt("user_id");
                     Toast.makeText(getApplicationContext(), "welcome " + GroupId + " " + userId, Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(FaceAuthenticationActivity.this, AttendanceSuccessActivity.class));
+
+                    //startActivity(new Intent(FaceAuthenticationActivity.this, AttendanceSuccessActivity.class));
+                    takeAttendance(qrCodeText);
                 }
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
@@ -278,6 +286,8 @@ public class FaceAuthenticationActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
+
+        qrCodeText = getIntent().getStringExtra("qrCodeText");
     }
 
     @Override
@@ -322,5 +332,44 @@ public class FaceAuthenticationActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void takeAttendance(String qrCodeText){
+
+        String[] qrCodeData = qrCodeText.split("_");
+
+        SharedPreferences sharedPref = getSharedPreferences("user_credentials", MODE_PRIVATE);
+        String userName = sharedPref.getString("username", "");
+
+        //QRCodeData(String studentUserName, String signInSignOutId, int scheduleId, String option)
+        QRCodeData qrCode = new QRCodeData(userName, qrCodeData[0], Integer.parseInt(qrCodeData[1]), qrCodeData[2]);
+
+        Call<ResponseBody> call = RetrofitClient
+                .getServerInstance()
+                .getAPI()
+                .takeAttendance(qrCode);
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                if(!response.isSuccessful()){
+
+                    //What to show if not sucessful?
+
+                    return;
+                }
+
+                Intent intent = new Intent(FaceAuthenticationActivity.this, FaceAuthenticationActivity.class);
+                intent.putExtra("qrCodeText", qrCodeText);
+                startActivity(intent);
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }

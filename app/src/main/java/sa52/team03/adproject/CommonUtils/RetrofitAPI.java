@@ -12,6 +12,7 @@ import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.Query;
 import sa52.team03.adproject.models.ClassModule;
+import sa52.team03.adproject.models.QRCodeData;
 import sa52.team03.adproject.models.User;
 
 public interface RetrofitAPI {
@@ -29,4 +30,13 @@ public interface RetrofitAPI {
 
     @GET("api/student/class-module")
     Call<List<ClassModule>> getClassModule(@Header("JwtToken") String token);
+    
+    @GET("api/student/attendance")
+    Call<Map<String, List<Integer>>> getAttendance(@Query("userName") String userName,@Header("JwtToken") String token);
+
+    @HTTP(method = "POST",path="api/student/scanQRCode", hasBody = true)
+    Call<ResponseBody> scanQRCode(@Body QRCodeData qrCodeData);
+
+    @HTTP(method = "POST",path="api/student/takeAttendance", hasBody = true)
+    Call<ResponseBody> takeAttendance(@Body QRCodeData qrCodeData);
 }

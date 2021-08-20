@@ -2,22 +2,32 @@ package sa52.team03.adproject.models;
 
 public class QRCodeData {
 
-    private int studentId;
-    private int scheduleId;
+    private String studentUserName;
     private String signInSignOutId;
+    private int scheduleId;
+    private String option;
 
-    public QRCodeData(int studentId, int scheduleId, String signInSignOutId) {
-        this.studentId = studentId;
-        this.scheduleId = scheduleId;
+    public QRCodeData(String studentUserName, String signInSignOutId, int scheduleId, String option) {
+        this.studentUserName = studentUserName;
         this.signInSignOutId = signInSignOutId;
+        this.scheduleId = scheduleId;
+        this.option = option;
     }
 
-    public int getStudentId() {
-        return studentId;
+    public String getStudentUserName() {
+        return studentUserName;
     }
 
-    public void setStudentId(int studentId) {
-        this.studentId = studentId;
+    public void setStudentUserName(String studentUserName) {
+        this.studentUserName = studentUserName;
+    }
+
+    public String getSignInSignOutId() {
+        return signInSignOutId;
+    }
+
+    public void setSignInSignOutId(String signInSignOutId) {
+        this.signInSignOutId = signInSignOutId;
     }
 
     public int getScheduleId() {
@@ -28,11 +38,11 @@ public class QRCodeData {
         this.scheduleId = scheduleId;
     }
 
-    public String getSignInSignOutId() {
-        return signInSignOutId;
+    public String getOption() {
+        return option;
     }
 
-    public void setSignInSignOutId(String signInSignOutId) {
-        this.signInSignOutId = signInSignOutId;
+    public void setOption(String option) {
+        this.option = option;
     }
 }

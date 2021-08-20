@@ -11,4 +11,8 @@
     <string name="submitted">you have submitted your attendance successfully</string>
     <string name="no_class_enrol">There is no class enrolment!</string>
 
+    <string name="scan_qr_code">Scan the QR code display by your Lecturer</string>
+
+    <string name="scan_qr_code_success">You have submitted your attendance successfully</string>
+
 </resources>

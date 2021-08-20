@@ -44,7 +44,7 @@ public class StudentMainActivity extends AppCompatActivity implements View.OnCli
 
         if(id==R.id.imgTakeAttendance){
 
-            Intent intent = new Intent(this, AttendanceSuccessActivity.class);
+            Intent intent = new Intent(this, QRCodeActivity.class);
             startActivity(intent);
 
         }else if(id==R.id.imgClassSchedule){

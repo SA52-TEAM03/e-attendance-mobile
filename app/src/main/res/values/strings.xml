@@ -8,5 +8,6 @@
     <string name="scan">please scan your face for authentication</string>
     <string name="cancel">cancel</string>
     <string name="student_username">Student username</string>
+    <string name="submitted">you have submitted your attendance successfully</string>
 
 </resources>

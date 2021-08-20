@@ -79,6 +79,7 @@ public class FaceAuthenticationActivity extends AppCompatActivity {
                     String GroupId = result_json.getJSONObject("result").getJSONArray("user_list").getJSONObject(0).getString("group_id");
                     int userId = result_json.getJSONObject("result").getJSONArray("user_list").getJSONObject(0).getInt("user_id");
                     Toast.makeText(getApplicationContext(), "welcome " + GroupId + " " + userId, Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(FaceAuthenticationActivity.this, AttendanceSuccessActivity.class));
                 }
             } catch (IOException | JSONException e) {
                 e.printStackTrace();

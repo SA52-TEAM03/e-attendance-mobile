@@ -170,7 +170,7 @@ public class FaceAuthenticationActivity extends AppCompatActivity {
         try {
             for (String cameraId : manager.getCameraIdList()) {
                 CameraCharacteristics characteristics = manager.getCameraCharacteristics(cameraId);
-                if (characteristics.get(CameraCharacteristics.LENS_FACING) != CameraCharacteristics.LENS_FACING_FRONT) {
+                if (characteristics.get(CameraCharacteristics.LENS_FACING) == CameraCharacteristics.LENS_FACING_FRONT) {
                     continue;
                 }
                 StreamConfigurationMap map = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
@@ -356,11 +356,11 @@ public class FaceAuthenticationActivity extends AppCompatActivity {
                 if(!response.isSuccessful()){
 
                     //What to show if not sucessful?
-
+                    Intent intent = new Intent(FaceAuthenticationActivity.this, AttendanceFailureActivity.class);
                     return;
                 }
 
-                Intent intent = new Intent(FaceAuthenticationActivity.this, FaceAuthenticationActivity.class);
+                Intent intent = new Intent(FaceAuthenticationActivity.this, AttendanceSuccessActivity.class);
                 intent.putExtra("qrCodeText", qrCodeText);
                 startActivity(intent);
 

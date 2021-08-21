@@ -1,6 +1,7 @@
 package sa52.team03.adproject.CommonUtils;
 
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
@@ -32,7 +33,7 @@ public interface RetrofitAPI {
     Call<List<ClassModule>> getClassModule(@Header("JwtToken") String token);
     
     @GET("api/student/attendance")
-    Call<Map<String, List<Integer>>> getAttendance(@Query("userName") String userName,@Header("JwtToken") String token);
+    Call<Map<String, List<Integer>>> getAttendance(@Query("userName") String userName, @Header("JwtToken") String token);
 
     @HTTP(method = "POST",path="api/student/scanQRCode", hasBody = true)
     Call<ResponseBody> scanQRCode(@Body QRCodeData qrCodeData);

@@ -8,11 +8,15 @@
     <string name="scan">please scan your face for authentication</string>
     <string name="cancel">cancel</string>
     <string name="student_username">Student username</string>
-    <string name="submitted">you have submitted your attendance successfully</string>
+
     <string name="no_class_enrol">There is no class enrolment!</string>
 
     <string name="scan_qr_code">Scan the QR code display by your Lecturer</string>
 
     <string name="scan_qr_code_success">You have submitted your attendance successfully</string>
+
+    <string name="scan_qr_code_failure">Your attendance taking is not successful! Make sure the QR Code is not expired and try again!</string>
+
+    <string name="back">Back</string>
 
 </resources>

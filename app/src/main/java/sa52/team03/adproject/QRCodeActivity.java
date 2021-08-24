@@ -134,10 +134,14 @@ public class QRCodeActivity extends AppCompatActivity {
         //QRCodeData(String studentUserName, String signInSignOutId, int scheduleId, String option)
         QRCodeData qrCode = new QRCodeData(userName, qrCodeData[0], Integer.parseInt(qrCodeData[1]), qrCodeData[2]);
 
+
+        SharedPreferences pref = getSharedPreferences("user_credentials",MODE_PRIVATE);
+        String token = pref.getString("JwtToken", null);
+
         Call<ResponseBody> call = RetrofitClient
                 .getServerInstance()
                 .getAPI()
-                .scanQRCode(qrCode);
+                .scanQRCode(token, qrCode);
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override

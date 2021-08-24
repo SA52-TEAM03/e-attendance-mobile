@@ -4,15 +4,59 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
+    android:orientation="vertical"
     tools:context=".AttendanceSuccessActivity">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/submitted"
-        android:gravity="center"
-        android:textSize="25sp"
+        android:text="@string/scan_qr_code_success"
+        android:gravity="left"
+        android:textSize="15sp"
         android:padding="10sp"/>
+
+    <TextView
+        android:id="@+id/txtStudentId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Student ID:"
+        android:gravity="left"
+        android:textSize="15sp"
+        android:padding="10sp"/>
+
+    <TextView
+        android:id="@+id/txtSubmissionTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Submission Time:"
+        android:gravity="left"
+        android:textSize="15sp"
+        android:padding="10sp"/>
+
+    <TextView
+        android:id="@+id/txtModuleCode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Module Code:"
+        android:gravity="left"
+        android:textSize="15sp"
+        android:padding="10sp"/>
+
+    <TextView
+        android:id="@+id/txtClassDateTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Class Date / Time:"
+        android:gravity="left"
+        android:textSize="15sp"
+        android:padding="10sp"/>
+
+    <Button
+        android:id="@+id/btnBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/back"
+        />
 
 </LinearLayout>

@@ -344,10 +344,13 @@ public class FaceAuthenticationActivity extends AppCompatActivity {
         //QRCodeData(String studentUserName, String signInSignOutId, int scheduleId, String option)
         QRCodeData qrCode = new QRCodeData(userName, qrCodeData[0], Integer.parseInt(qrCodeData[1]), qrCodeData[2]);
 
+        SharedPreferences pref = getSharedPreferences("user_credentials",MODE_PRIVATE);
+        String token = pref.getString("JwtToken", null);
+
         Call<ResponseBody> call = RetrofitClient
                 .getServerInstance()
                 .getAPI()
-                .takeAttendance(qrCode);
+                .takeAttendance(token, qrCode);
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -357,6 +360,7 @@ public class FaceAuthenticationActivity extends AppCompatActivity {
 
                     //What to show if not sucessful?
                     Intent intent = new Intent(FaceAuthenticationActivity.this, AttendanceFailureActivity.class);
+                    startActivity(intent);
                     return;
                 }
 

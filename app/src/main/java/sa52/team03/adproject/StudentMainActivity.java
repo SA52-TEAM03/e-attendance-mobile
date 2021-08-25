@@ -5,6 +5,8 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -12,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 public class StudentMainActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -20,8 +23,15 @@ public class StudentMainActivity extends AppCompatActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_main);
 
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        TextView mTextView = findViewById(R.id.greeting);
+
+        SharedPreferences pref = getSharedPreferences("user_credentials",MODE_PRIVATE);
+        String fullname = pref.getString("fullname", null);
+
+        if (fullname!=null){
+            mTextView.setText("Hi, " + fullname);
+            mTextView.setBackgroundColor(Color.parseColor("#F5F5F5"));
+        }
 
         setupImageViews();
     }
@@ -75,8 +85,13 @@ public class StudentMainActivity extends AppCompatActivity implements View.OnCli
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case android.R.id.home:
-                this.finish();
+            case R.id.logout:
+                SharedPreferences sharedPref = getSharedPreferences("user_credentials", MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.clear();
+                editor.apply();
+                Intent intent = new Intent(this,LogInActivity.class);
+                startActivity(intent);
                 return true;
         }
         return super.onOptionsItemSelected(item);

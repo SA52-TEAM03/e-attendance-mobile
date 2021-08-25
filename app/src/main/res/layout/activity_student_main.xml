@@ -7,6 +7,14 @@
     android:orientation="vertical"
     tools:context=".LogInActivity">
 
+    <TextView
+        android:id="@+id/greeting"
+        android:textSize="22sp"
+        android:paddingHorizontal="15dp"
+        android:paddingVertical="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">

@@ -35,6 +35,11 @@ public class LogInActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onBackPressed () {
+
+    }
+
     private void Login(String username, String password) {
 
         Call<ResponseBody> call = RetrofitClient
@@ -47,12 +52,14 @@ public class LogInActivity extends AppCompatActivity {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
 
                 String token = response.headers().get("JwtToken");
+                String fullname = response.headers().get("fullname");
                 if (token != null) {
                     SharedPreferences sharedPref = getSharedPreferences("user_credentials", MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPref.edit();
                     editor.putString("JwtToken", token);
                     editor.putString("username", username);
                     editor.putString("password", password);
+                    editor.putString("fullname", fullname);
                     editor.apply();
                     startActivity(new Intent(LogInActivity.this, StudentMainActivity.class));
                 } else {

@@ -170,7 +170,7 @@ public class FaceAuthenticationActivity extends AppCompatActivity {
         try {
             for (String cameraId : manager.getCameraIdList()) {
                 CameraCharacteristics characteristics = manager.getCameraCharacteristics(cameraId);
-                if (characteristics.get(CameraCharacteristics.LENS_FACING) == CameraCharacteristics.LENS_FACING_FRONT) {
+                if (characteristics.get(CameraCharacteristics.LENS_FACING) != CameraCharacteristics.LENS_FACING_FRONT) {
                     continue;
                 }
                 StreamConfigurationMap map = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);

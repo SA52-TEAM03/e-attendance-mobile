@@ -56,8 +56,8 @@ public class FaceUtil {
         bodyJson.put("image", stringBase64);
         bodyJson.put("image_type", "BASE64");
         bodyJson.put("group_id_list", "student,lecturer,admin");
-        bodyJson.put("quality_control", "HIGH");
-        bodyJson.put("liveness_control", "NORMAL");
+        bodyJson.put("quality_control", "NORMAL");
+        bodyJson.put("liveness_control", "LOW");
         bodyJson.put("max_face_num", "1");
         String bodyString = bodyJson.toString();
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), bodyString);

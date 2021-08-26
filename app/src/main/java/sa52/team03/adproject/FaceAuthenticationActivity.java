@@ -66,26 +66,27 @@ public class FaceAuthenticationActivity extends AppCompatActivity {
             try {
                 assert response.body() != null;
                 JSONObject result_json = new JSONObject(response.body().string());
-                runOnUiThread(() -> {
-                    try {
-                        tv_message.setText(result_json.getString("error_msg"));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                });
+                SharedPreferences pref = getSharedPreferences("user_credentials", MODE_PRIVATE);
+                String LoginUserId = pref.getString("userId", null);
+
+                String GroupId = result_json.getJSONObject("result").getJSONArray("user_list").getJSONObject(0).getString("group_id");
+                int userId = result_json.getJSONObject("result").getJSONArray("user_list").getJSONObject(0).getInt("user_id");
 
                 if (!result_json.getString("error_code").equals("0")) {
-
+                    runOnUiThread(() -> {
+                        try {
+                            tv_message.setText(result_json.getString("error_msg"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    });
                     mBackgroundHandler.postDelayed(() -> searchFace(), 1000);
 
+                } else if (!LoginUserId.equals(String.valueOf(userId))) {
+                    Toast.makeText(getApplicationContext(), "Sorry, face id authentication failed", Toast.LENGTH_SHORT).show();
                 } else {
-
                     //Face Authentication Success
-                    System.out.println(result_json.toString(2));
-                    String GroupId = result_json.getJSONObject("result").getJSONArray("user_list").getJSONObject(0).getString("group_id");
-                    int userId = result_json.getJSONObject("result").getJSONArray("user_list").getJSONObject(0).getInt("user_id");
                     Toast.makeText(getApplicationContext(), "welcome " + GroupId + " " + userId, Toast.LENGTH_SHORT).show();
-
                     //startActivity(new Intent(FaceAuthenticationActivity.this, AttendanceSuccessActivity.class));
                     takeAttendance(qrCodeText);
                 }
@@ -336,14 +337,14 @@ public class FaceAuthenticationActivity extends AppCompatActivity {
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.clear();
                 editor.apply();
-                Intent intent = new Intent(this,LogInActivity.class);
+                Intent intent = new Intent(this, LogInActivity.class);
                 startActivity(intent);
                 return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    public void takeAttendance(String qrCodeText){
+    public void takeAttendance(String qrCodeText) {
 
         String[] qrCodeData = qrCodeText.split("_");
 
@@ -353,7 +354,7 @@ public class FaceAuthenticationActivity extends AppCompatActivity {
         //QRCodeData(String studentUserName, String signInSignOutId, int scheduleId, String option)
         QRCodeData qrCode = new QRCodeData(userName, qrCodeData[0], Integer.parseInt(qrCodeData[1]), qrCodeData[2]);
 
-        SharedPreferences pref = getSharedPreferences("user_credentials",MODE_PRIVATE);
+        SharedPreferences pref = getSharedPreferences("user_credentials", MODE_PRIVATE);
         String token = pref.getString("JwtToken", null);
 
         Call<ResponseBody> call = RetrofitClient
@@ -365,9 +366,9 @@ public class FaceAuthenticationActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
 
-                if(!response.isSuccessful()){
+                if (!response.isSuccessful()) {
 
-                    //What to show if not sucessful?
+                    //What to show if not successfully?
                     Intent intent = new Intent(FaceAuthenticationActivity.this, AttendanceFailureActivity.class);
                     startActivity(intent);
                     return;

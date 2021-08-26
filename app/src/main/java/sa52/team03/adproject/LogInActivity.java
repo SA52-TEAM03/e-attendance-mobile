@@ -53,6 +53,7 @@ public class LogInActivity extends AppCompatActivity {
 
                 String token = response.headers().get("JwtToken");
                 String fullname = response.headers().get("fullname");
+                String userId = response.headers().get("userId");
                 if (token != null) {
                     SharedPreferences sharedPref = getSharedPreferences("user_credentials", MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPref.edit();
@@ -60,6 +61,7 @@ public class LogInActivity extends AppCompatActivity {
                     editor.putString("username", username);
                     editor.putString("password", password);
                     editor.putString("fullname", fullname);
+                    editor.putString("userId", userId);
                     editor.apply();
                     startActivity(new Intent(LogInActivity.this, StudentMainActivity.class));
                 } else {

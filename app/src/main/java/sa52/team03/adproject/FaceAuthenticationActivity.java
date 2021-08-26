@@ -69,9 +69,6 @@ public class FaceAuthenticationActivity extends AppCompatActivity {
                 SharedPreferences pref = getSharedPreferences("user_credentials", MODE_PRIVATE);
                 String LoginUserId = pref.getString("userId", null);
 
-                String GroupId = result_json.getJSONObject("result").getJSONArray("user_list").getJSONObject(0).getString("group_id");
-                int userId = result_json.getJSONObject("result").getJSONArray("user_list").getJSONObject(0).getInt("user_id");
-
                 if (!result_json.getString("error_code").equals("0")) {
                     runOnUiThread(() -> {
                         try {
@@ -82,13 +79,19 @@ public class FaceAuthenticationActivity extends AppCompatActivity {
                     });
                     mBackgroundHandler.postDelayed(() -> searchFace(), 1000);
 
-                } else if (!LoginUserId.equals(String.valueOf(userId))) {
-                    Toast.makeText(getApplicationContext(), "Sorry, face id authentication failed", Toast.LENGTH_SHORT).show();
                 } else {
-                    //Face Authentication Success
-                    Toast.makeText(getApplicationContext(), "welcome " + GroupId + " " + userId, Toast.LENGTH_SHORT).show();
-                    //startActivity(new Intent(FaceAuthenticationActivity.this, AttendanceSuccessActivity.class));
-                    takeAttendance(qrCodeText);
+                    String GroupId = result_json.getJSONObject("result").getJSONArray("user_list").getJSONObject(0).getString("group_id");
+                    int userId = result_json.getJSONObject("result").getJSONArray("user_list").getJSONObject(0).getInt("user_id");
+
+                    if (!LoginUserId.equals(String.valueOf(userId))) {
+                        Toast.makeText(getApplicationContext(), "Sorry, face id authentication failed", Toast.LENGTH_SHORT).show();
+                    } else {
+
+                        //Face Authentication Success
+                        Toast.makeText(getApplicationContext(), "welcome " + GroupId + " " + userId, Toast.LENGTH_SHORT).show();
+                        //startActivity(new Intent(FaceAuthenticationActivity.this, AttendanceSuccessActivity.class));
+                        takeAttendance(qrCodeText);
+                    }
                 }
             } catch (IOException | JSONException e) {
                 e.printStackTrace();

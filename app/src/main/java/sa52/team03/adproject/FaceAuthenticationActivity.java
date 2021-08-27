@@ -84,9 +84,14 @@ public class FaceAuthenticationActivity extends AppCompatActivity {
                     int userId = result_json.getJSONObject("result").getJSONArray("user_list").getJSONObject(0).getInt("user_id");
 
                     if (!LoginUserId.equals(String.valueOf(userId))) {
-                        Toast.makeText(getApplicationContext(), "Sorry, face id authentication failed", Toast.LENGTH_SHORT).show();
+                        runOnUiThread(() -> {
+                                tv_message.setText("Face id not matching userId");
+                        });
+                        mBackgroundHandler.postDelayed(() -> searchFace(), 1000);
                     } else {
-
+                        runOnUiThread(() -> {
+                            tv_message.setText("SUCCESS");
+                        });
                         //Face Authentication Success
                         Toast.makeText(getApplicationContext(), "welcome " + GroupId + " " + userId, Toast.LENGTH_SHORT).show();
                         //startActivity(new Intent(FaceAuthenticationActivity.this, AttendanceSuccessActivity.class));

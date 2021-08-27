@@ -104,7 +104,16 @@ public class QRCodeActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        validateQRCode(result.getText());
+
+                        if(result!=null && result.getText()!=null){
+
+                            String[] qrCodeData = result.getText().split("_");
+                            if(qrCodeData[2].equals("signIn") || qrCodeData[2].equals("signOut")){
+                                validateQRCode(result.getText());
+                            }else {
+                                txtQRCodeData.setText("Wrong QR Code! Tap inside the square box to scan again.");
+                            }
+                        }
                     }
                 });
             }
@@ -156,7 +165,7 @@ public class QRCodeActivity extends AppCompatActivity {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
 
                 if(!response.isSuccessful()){
-                    txtQRCodeData.setText("QR Code Expired or Wrong QR Code!");
+                    txtQRCodeData.setText("QR Code Expired or Wrong QR Code! Tap inside the square box to scan again.");
                     return;
                 }
 

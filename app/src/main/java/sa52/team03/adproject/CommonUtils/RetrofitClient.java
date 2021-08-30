@@ -5,7 +5,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
 
-    private static final String SERVER_URL = "http://localhost:8080/";
+    private static final String SERVER_URL = "https://sa52-e-attendance-backend.herokuapp.com/";
     private static final String FACE_ID_URL = "https://aip.baidubce.com/rest/2.0/face/v3/";
     private static RetrofitClient faceIdClient;
     private static RetrofitClient serverClient;

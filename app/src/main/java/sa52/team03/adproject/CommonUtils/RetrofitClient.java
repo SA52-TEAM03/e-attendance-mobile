@@ -4,8 +4,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
-
-    private static final String SERVER_URL = "http://localhost:8080/";
+    //Insert your IP address
+    private static final String SERVER_URL = "http://192.168.10.147:8080/";
     private static final String FACE_ID_URL = "https://aip.baidubce.com/rest/2.0/face/v3/";
     private static RetrofitClient faceIdClient;
     private static RetrofitClient serverClient;
